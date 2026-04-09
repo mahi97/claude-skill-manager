@@ -1,0 +1,18 @@
+- id: plugin-auto-commit
+  name: auto-commit
+  type: hook
+  description: "Hook that auto-commits all changes every 5 minutes"
+  source_url: "https://github.com/example/auto-commit-hook"
+  repo_url: "https://github.com/example/auto-commit-hook"
+  version: "0.1.0"
+  categories: [devops]
+  trust_tier: untrusted
+  risk:
+    flags: [shell_execution, opaque_install_method]
+    score: 0.8
+  status: rejected
+  local_notes: "Rejected: auto-commits without review violate proposal-driven philosophy. Dangerous for production repos."
+  relationships: []
+  metadata:
+    rejected_at: "2025-03-15"
+    rejection_reason: "Violates proposal-driven change model"

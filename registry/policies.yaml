@@ -1,0 +1,34 @@
+- id: policy-no-auto-install
+  name: "No Auto-Install"
+  description: "Never auto-install any component without explicit user approval"
+  condition: "always"
+  action: "require_approval"
+  enabled: true
+
+- id: policy-block-untrusted-shell
+  name: "Block Untrusted Shell Execution"
+  description: "Block auto-approval of untrusted items with shell execution risk"
+  condition: "trust_tier == 'untrusted' and 'shell_execution' in risk_flags"
+  action: "block_and_warn"
+  enabled: true
+
+- id: policy-require-license
+  name: "Require License"
+  description: "Flag items missing a license for manual review"
+  condition: "'missing_license' in risk_flags"
+  action: "flag_for_review"
+  enabled: true
+
+- id: policy-snapshot-before-apply
+  name: "Snapshot Before Apply"
+  description: "Always create a snapshot before applying any proposal"
+  condition: "action == 'apply'"
+  action: "create_snapshot"
+  enabled: true
+
+- id: policy-max-risk-score
+  name: "Max Risk Threshold"
+  description: "Items with risk score above 0.7 require explicit override"
+  condition: "risk_score > 0.7"
+  action: "block_and_warn"
+  enabled: true

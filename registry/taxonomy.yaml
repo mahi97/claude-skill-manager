@@ -1,0 +1,49 @@
+- id: cat-memory
+  name: Memory
+  description: "Session persistence, recall, and knowledge management"
+  children: []
+
+- id: cat-coding
+  name: Coding
+  description: "Code generation, editing, and development workflows"
+  children: []
+
+- id: cat-scientific
+  name: Scientific
+  description: "Research, papers, experiments, and data analysis"
+  children: []
+
+- id: cat-devops
+  name: DevOps
+  description: "CI/CD, deployment, git workflows, and infrastructure"
+  children: []
+
+- id: cat-docs
+  name: Documentation
+  description: "Documentation generation, fetching, and management"
+  children: []
+
+- id: cat-review
+  name: Review
+  description: "Code review, PR review, and quality assurance"
+  children: []
+
+- id: cat-research-automation
+  name: Research Automation
+  description: "Automated research, paper discovery, and literature review"
+  children: []
+
+- id: cat-infra
+  name: Infrastructure
+  description: "System configuration, hooks, and platform integration"
+  children: []
+
+- id: cat-quality
+  name: Quality
+  description: "Testing, linting, and code quality improvement"
+  children: []
+
+- id: cat-ui
+  name: UI
+  description: "Frontend development, design systems, and visual tools"
+  children: []

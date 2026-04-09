@@ -1,0 +1,35 @@
+id: eval-plugin-playwright-mcp
+item_id: plugin-playwright-mcp
+scores:
+- dimension: freshness
+  score: 0.2
+  weight: 1.0
+  reasoning: 'Last seen: None'
+- dimension: documentation
+  score: 0.8
+  weight: 0.8
+  reasoning: 'Description length: 46'
+- dimension: trust
+  score: 0.5
+  weight: 1.2
+  reasoning: 'Trust tier: community'
+- dimension: risk
+  score: 0.3
+  weight: 1.5
+  reasoning: 'Risk flags: 3'
+- dimension: overlap
+  score: 1.0
+  weight: 0.8
+  reasoning: No overlap with installed items
+overall_score: 0.508
+recommendation: Review manually
+overlap_with: []
+risk_assessment:
+  flags:
+  - shell_execution
+  - network_calls
+  - wide_filesystem_access
+  score: 0.55
+  notes: ''
+evaluated_at: '2026-04-09T11:13:57.083460Z'
+evaluator: deterministic-v1

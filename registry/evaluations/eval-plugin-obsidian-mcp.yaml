@@ -1,0 +1,35 @@
+id: eval-plugin-obsidian-mcp
+item_id: plugin-obsidian-mcp
+scores:
+- dimension: freshness
+  score: 0.2
+  weight: 1.0
+  reasoning: 'Last seen: None'
+- dimension: documentation
+  score: 0.8
+  weight: 0.8
+  reasoning: 'Description length: 55'
+- dimension: trust
+  score: 0.5
+  weight: 1.2
+  reasoning: 'Trust tier: community'
+- dimension: risk
+  score: 0.6
+  weight: 1.5
+  reasoning: 'Risk flags: 2'
+- dimension: overlap
+  score: 0.6
+  weight: 0.8
+  reasoning: 'Overlaps with: plugin-context7'
+overall_score: 0.532
+recommendation: Review manually
+overlap_with:
+- plugin-context7
+risk_assessment:
+  flags:
+  - wide_filesystem_access
+  - network_calls
+  score: 0.4
+  notes: ''
+evaluated_at: '2026-04-09T11:13:57.064735Z'
+evaluator: deterministic-v1

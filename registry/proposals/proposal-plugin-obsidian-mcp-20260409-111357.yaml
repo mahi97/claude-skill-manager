@@ -1,0 +1,54 @@
+id: proposal-plugin-obsidian-mcp-20260409-111357
+title: Install mcp_server 'obsidian-mcp'
+summary: Proposal to install mcp_server 'obsidian-mcp' from source https://github.com/example/obsidian-mcp-server.
+changes:
+- action: install
+  item_id: plugin-obsidian-mcp
+  item_name: obsidian-mcp
+  description: 'Install mcp_server: obsidian-mcp'
+  registry_diff:
+    add_to: installed
+    item:
+      id: plugin-obsidian-mcp
+      name: obsidian-mcp
+      type: mcp_server
+      description: MCP server for reading and writing Obsidian vault notes
+      source_url: https://github.com/example/obsidian-mcp-server
+      repo_url: https://github.com/example/obsidian-mcp-server
+      version: 0.3.0
+      categories:
+      - docs
+      - memory
+      trust_tier: community
+      risk:
+        flags:
+        - wide_filesystem_access
+        - network_calls
+        score: 0.4
+        notes: ''
+      status: candidate
+      last_seen_at: null
+      last_evaluated_at: null
+      local_notes: Discovered via GitHub search. Could complement remember plugin.
+      relationships:
+      - source_id: plugin-obsidian-mcp
+        target_id: plugin-remember
+        type: recommended_with
+        notes: ''
+      metadata:
+        discovered_at: '2025-04-01'
+      created_at: '2026-04-09T11:13:57.088477Z'
+      updated_at: '2026-04-09T11:13:57.088479Z'
+why_it_matters: MCP server for reading and writing Obsidian vault notes
+overlap_analysis: 'Overlaps with existing items: plugin-context7. Consider whether
+  both are needed.'
+trust_summary: 'Trust tier: community. Source: https://github.com/example/obsidian-mcp-server.'
+risk_summary: '- wide_filesystem_access
+
+  - network_calls'
+workflow_impact: Adds a new mcp_server to the Claude Code stack.
+recommendation: Review manually
+status: pending
+created_at: '2026-04-09T11:13:57.169730Z'
+applied_at: null
+snapshot_id: null

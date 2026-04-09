@@ -1,0 +1,50 @@
+id: proposal-skill-arxiv-reader-20260409-111357
+title: Install skill 'arxiv-reader'
+summary: Proposal to install skill 'arxiv-reader' from source https://github.com/example/arxiv-reader-skill.
+changes:
+- action: install
+  item_id: skill-arxiv-reader
+  item_name: arxiv-reader
+  description: 'Install skill: arxiv-reader'
+  registry_diff:
+    add_to: installed
+    item:
+      id: skill-arxiv-reader
+      name: arxiv-reader
+      type: skill
+      description: Skill for fetching and summarizing arXiv papers
+      source_url: https://github.com/example/arxiv-reader-skill
+      repo_url: https://github.com/example/arxiv-reader-skill
+      version: 1.0.0
+      categories:
+      - scientific
+      - research-automation
+      trust_tier: community
+      risk:
+        flags:
+        - network_calls
+        score: 0.2
+        notes: ''
+      status: candidate
+      last_seen_at: null
+      last_evaluated_at: null
+      local_notes: Could overlap with huggingface-skills paper features
+      relationships:
+      - source_id: skill-arxiv-reader
+        target_id: plugin-huggingface
+        type: conflicts_with
+        notes: HF skills already has paper_search
+      metadata:
+        discovered_at: '2025-04-05'
+      created_at: '2026-04-09T11:13:57.088489Z'
+      updated_at: '2026-04-09T11:13:57.088489Z'
+why_it_matters: Skill for fetching and summarizing arXiv papers
+overlap_analysis: No overlap with current stack.
+trust_summary: 'Trust tier: community. Source: https://github.com/example/arxiv-reader-skill.'
+risk_summary: '- network_calls'
+workflow_impact: Adds a new skill to the Claude Code stack.
+recommendation: Review manually
+status: pending
+created_at: '2026-04-09T11:13:57.169778Z'
+applied_at: null
+snapshot_id: null

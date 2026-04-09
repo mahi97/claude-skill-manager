@@ -1,0 +1,15 @@
+{
+  "name": "claude-skill-manager-marketplace",
+  "description": "CSM — persistent skill/plugin lifecycle manager for Claude Code",
+  "owner": {
+    "name": "Mahi97"
+  },
+  "plugins": [
+    {
+      "name": "claude-skill-manager",
+      "description": "Persistent skill/plugin lifecycle manager — scouts, evaluates, proposes, and manages your Claude Code ecosystem",
+      "version": "0.1.0",
+      "source": "./"
+    }
+  ]
+}

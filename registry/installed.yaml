@@ -1,0 +1,185 @@
+- id: plugin-superpowers
+  name: superpowers
+  type: plugin
+  description: "Meta-skills for brainstorming, planning, TDD, debugging, and code review workflows"
+  source_url: "https://github.com/anthropics/claude-code-plugins"
+  repo_url: "https://github.com/anthropics/claude-code-plugins"
+  version: "2.0.0"
+  categories: [coding, quality, review]
+  trust_tier: official
+  risk:
+    flags: []
+    score: 0.05
+  status: installed
+  local_notes: "Core workflow plugin, installed via divan"
+  relationships:
+    - source_id: plugin-superpowers
+      target_id: plugin-commit-commands
+      type: recommended_with
+  metadata:
+    installed_via: divan
+
+- id: plugin-context7
+  name: context7
+  type: mcp_server
+  description: "MCP server for fetching up-to-date library documentation"
+  source_url: "https://github.com/context7/context7-mcp"
+  repo_url: "https://github.com/context7/context7-mcp"
+  version: "1.0.0"
+  categories: [docs, coding]
+  trust_tier: curated
+  risk:
+    flags: [network_calls]
+    score: 0.2
+  status: installed
+  local_notes: "Docs fetcher MCP, very useful for current API references"
+  relationships: []
+  metadata:
+    installed_via: divan
+
+- id: plugin-commit-commands
+  name: commit-commands
+  type: plugin
+  description: "Git commit, push, and PR creation skills"
+  source_url: "https://github.com/anthropics/claude-code-plugins"
+  repo_url: "https://github.com/anthropics/claude-code-plugins"
+  version: "1.0.0"
+  categories: [devops, coding]
+  trust_tier: official
+  risk:
+    flags: [shell_execution]
+    score: 0.15
+  status: installed
+  local_notes: "Standard git workflow commands"
+  relationships: []
+  metadata:
+    installed_via: divan
+
+- id: plugin-remember
+  name: remember
+  type: plugin
+  description: "Session state persistence for clean continuation between conversations"
+  source_url: "https://github.com/anthropics/claude-code-plugins"
+  repo_url: "https://github.com/anthropics/claude-code-plugins"
+  version: "1.0.0"
+  categories: [memory]
+  trust_tier: official
+  risk:
+    flags: [wide_filesystem_access]
+    score: 0.1
+  status: installed
+  local_notes: "Memory management for session continuity"
+  relationships: []
+  metadata:
+    installed_via: divan
+
+- id: plugin-code-review
+  name: code-review
+  type: plugin
+  description: "Pull request code review workflows"
+  source_url: "https://github.com/anthropics/claude-code-plugins"
+  repo_url: "https://github.com/anthropics/claude-code-plugins"
+  version: "1.0.0"
+  categories: [review, quality]
+  trust_tier: official
+  risk:
+    flags: [network_calls]
+    score: 0.1
+  status: installed
+  local_notes: "PR review automation"
+  relationships:
+    - source_id: plugin-code-review
+      target_id: plugin-superpowers
+      type: recommended_with
+  metadata:
+    installed_via: divan
+
+- id: plugin-feature-dev
+  name: feature-dev
+  type: plugin
+  description: "Guided feature development with codebase analysis and architecture focus"
+  source_url: "https://github.com/anthropics/claude-code-plugins"
+  repo_url: "https://github.com/anthropics/claude-code-plugins"
+  version: "1.0.0"
+  categories: [coding, quality]
+  trust_tier: official
+  risk:
+    flags: []
+    score: 0.05
+  status: installed
+  local_notes: "Feature development workflow with exploration and architecture agents"
+  relationships: []
+  metadata:
+    installed_via: divan
+
+- id: plugin-hookify
+  name: hookify
+  type: plugin
+  description: "Create hooks to prevent unwanted Claude behaviors from conversation analysis"
+  source_url: "https://github.com/anthropics/claude-code-plugins"
+  repo_url: "https://github.com/anthropics/claude-code-plugins"
+  version: "1.0.0"
+  categories: [quality, infra]
+  trust_tier: official
+  risk:
+    flags: [shell_execution]
+    score: 0.15
+  status: installed
+  local_notes: "Behavioral guardrails via hooks"
+  relationships: []
+  metadata:
+    installed_via: divan
+
+- id: mcp-github
+  name: github
+  type: mcp_server
+  description: "GitHub MCP server for issues, PRs, repos, and code search"
+  source_url: "https://github.com/github/github-mcp-server"
+  repo_url: "https://github.com/github/github-mcp-server"
+  version: "1.0.0"
+  categories: [devops, coding]
+  trust_tier: official
+  risk:
+    flags: [network_calls, external_mcp_access]
+    score: 0.2
+  status: installed
+  local_notes: "Official GitHub MCP integration"
+  relationships: []
+  metadata:
+    installed_via: divan
+
+- id: plugin-vercel
+  name: vercel
+  type: plugin
+  description: "Vercel deployment, AI SDK, and platform integration skills"
+  source_url: "https://github.com/anthropics/claude-code-plugins"
+  repo_url: "https://github.com/anthropics/claude-code-plugins"
+  version: "1.0.0"
+  categories: [devops, infra]
+  trust_tier: curated
+  risk:
+    flags: [network_calls, shell_execution]
+    score: 0.25
+  status: installed
+  local_notes: "Vercel platform integration"
+  relationships: []
+  metadata:
+    installed_via: divan
+
+- id: plugin-huggingface
+  name: huggingface-skills
+  type: plugin
+  description: "Hugging Face Hub skills for models, datasets, training, and papers"
+  source_url: "https://github.com/anthropics/claude-code-plugins"
+  repo_url: "https://github.com/anthropics/claude-code-plugins"
+  version: "1.0.0"
+  categories: [scientific, research-automation]
+  trust_tier: curated
+  risk:
+    flags: [network_calls]
+    score: 0.15
+  status: installed
+  local_notes: "HuggingFace ecosystem integration"
+  relationships: []
+  metadata:
+    installed_via: divan

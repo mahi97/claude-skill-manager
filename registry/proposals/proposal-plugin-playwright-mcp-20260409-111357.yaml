@@ -1,0 +1,52 @@
+id: proposal-plugin-playwright-mcp-20260409-111357
+title: Install mcp_server 'playwright-mcp'
+summary: Proposal to install mcp_server 'playwright-mcp' from source https://github.com/example/playwright-mcp.
+changes:
+- action: install
+  item_id: plugin-playwright-mcp
+  item_name: playwright-mcp
+  description: 'Install mcp_server: playwright-mcp'
+  registry_diff:
+    add_to: installed
+    item:
+      id: plugin-playwright-mcp
+      name: playwright-mcp
+      type: mcp_server
+      description: Browser automation MCP server using Playwright
+      source_url: https://github.com/example/playwright-mcp
+      repo_url: https://github.com/example/playwright-mcp
+      version: 0.5.0
+      categories:
+      - quality
+      - ui
+      trust_tier: community
+      risk:
+        flags:
+        - shell_execution
+        - network_calls
+        - wide_filesystem_access
+        score: 0.55
+        notes: ''
+      status: candidate
+      last_seen_at: null
+      last_evaluated_at: null
+      local_notes: Useful for E2E testing but high risk profile
+      relationships: []
+      metadata:
+        discovered_at: '2025-04-08'
+      created_at: '2026-04-09T11:13:57.088496Z'
+      updated_at: '2026-04-09T11:13:57.088496Z'
+why_it_matters: Browser automation MCP server using Playwright
+overlap_analysis: No overlap with current stack.
+trust_summary: 'Trust tier: community. Source: https://github.com/example/playwright-mcp.'
+risk_summary: '- shell_execution
+
+  - network_calls
+
+  - wide_filesystem_access'
+workflow_impact: Adds a new mcp_server to the Claude Code stack.
+recommendation: Review manually
+status: pending
+created_at: '2026-04-09T11:13:57.169814Z'
+applied_at: null
+snapshot_id: null

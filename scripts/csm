@@ -1,0 +1,237 @@
+#!/usr/bin/env bash
+# CSM CLI wrapper — use from any terminal
+# Usage: csm <command> [args...]
+
+set -euo pipefail
+
+# Resolve plugin root (works whether called from PATH symlink or directly)
+if [[ -L "${BASH_SOURCE[0]}" ]]; then
+    SCRIPT_DIR="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+else
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+fi
+PLUGIN_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+export PYTHONPATH="${PLUGIN_ROOT}/packages/core:${PLUGIN_ROOT}/packages/connectors:${PLUGIN_ROOT}/packages/agents"
+
+ACTION="${1:-help}"
+shift || true
+
+# --- Helper: ensure deps are installed ---
+ensure_deps() {
+    if [[ ! -d "${PLUGIN_ROOT}/.venv" ]]; then
+        echo "First run — installing Python dependencies..."
+        cd "$PLUGIN_ROOT" && uv sync --all-extras --quiet 2>&1
+        echo "Done."
+    fi
+}
+
+case "$ACTION" in
+
+    # === Setup & Install ===
+
+    setup)
+        echo "=== CSM Setup ==="
+        echo ""
+
+        # Python deps
+        echo "[1/4] Installing Python dependencies..."
+        cd "$PLUGIN_ROOT" && uv sync --all-extras
+        echo ""
+
+        # Web UI deps
+        echo "[2/4] Installing web UI dependencies..."
+        cd "${PLUGIN_ROOT}/apps/web" && npm install --silent 2>&1
+        echo ""
+
+        # Symlink csm to PATH
+        echo "[3/4] Adding csm to PATH..."
+        mkdir -p "${HOME}/.local/bin"
+        ln -sf "${PLUGIN_ROOT}/scripts/csm" "${HOME}/.local/bin/csm"
+        echo "  Linked: ~/.local/bin/csm -> ${PLUGIN_ROOT}/scripts/csm"
+        echo ""
+
+        # Verify
+        echo "[4/4] Verifying..."
+        cd "$PLUGIN_ROOT" && PYTHONPATH="${PYTHONPATH}" uv run python -c "from csm_core.models import ItemType; print('  Python engine: OK')"
+        echo "  Registry: $(ls ${PLUGIN_ROOT}/registry/*.yaml | wc -l) files"
+        echo ""
+        echo "=== Setup complete ==="
+        echo ""
+        echo "Quick start:"
+        echo "  csm status          # See your registry"
+        echo "  csm start           # Launch background daemon"
+        echo "  csm attach          # Talk to the daemon"
+        ;;
+
+    # === Start: fully automatic background daemon ===
+
+    start)
+        ensure_deps
+        SESSION_NAME="csm-daemon"
+
+        # Check if already running
+        if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+            echo "CSM daemon is already running."
+            echo "  Attach: csm attach"
+            echo "  Stop:   csm stop"
+            exit 0
+        fi
+
+        # Start tmux with Claude Code + daemon command
+        echo "Starting CSM daemon in background..."
+        tmux new-session -d -s "$SESSION_NAME" -c "$PLUGIN_ROOT" \
+            "claude --dangerously-skip-permissions '/csm-daemon $*' 2>&1; echo 'CSM daemon exited. Press enter to close.'; read"
+
+        # Wait briefly and verify it launched
+        sleep 1
+        if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+            echo "CSM daemon running in tmux session: $SESSION_NAME"
+            echo ""
+            echo "  Attach:  csm attach"
+            echo "  Stop:    csm stop"
+            echo "  Status:  csm status"
+            echo ""
+            echo "The daemon is now scouting and evaluating in the background."
+            echo "Use /csm commands in any Claude Code session, or csm CLI from any terminal."
+        else
+            echo "ERROR: Failed to start daemon. Check tmux and claude are available."
+            exit 1
+        fi
+        ;;
+
+    # === Stop daemon ===
+
+    stop)
+        STATE_FILE="${PLUGIN_ROOT}/.claude/csm-daemon.local.md"
+        SESSION_NAME="csm-daemon"
+
+        if [[ -f "$STATE_FILE" ]]; then
+            sed -i 's/^stop_requested: false/stop_requested: true/' "$STATE_FILE"
+            sed -i 's/^active: true/active: false/' "$STATE_FILE"
+            echo "CSM daemon stop requested."
+        fi
+
+        # Also offer to kill the tmux session
+        if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+            echo "Tmux session '$SESSION_NAME' is still running."
+            echo "  Kill it with: tmux kill-session -t $SESSION_NAME"
+        else
+            echo "No daemon tmux session found."
+        fi
+        ;;
+
+    # === Attach to daemon ===
+
+    attach)
+        tmux attach -t csm-daemon 2>/dev/null || {
+            echo "No daemon running. Start with: csm start"
+            exit 1
+        }
+        ;;
+
+    # === Direct CLI commands (immediate results) ===
+
+    status|search|inspect|compare|evaluate|propose|apply|snapshot|rollback|graph|init)
+        ensure_deps
+        cd "$PLUGIN_ROOT" && uv run python -m apps.cli.main "$ACTION" "$@"
+        ;;
+
+    serve)
+        ensure_deps
+        cd "$PLUGIN_ROOT" && uv run python -m apps.cli.main serve "$@"
+        ;;
+
+    scout)
+        ensure_deps
+        cd "$PLUGIN_ROOT" && uv run python -m apps.cli.main scout "$@"
+        ;;
+
+    # === Queue async request to daemon ===
+
+    find|suggest|build)
+        "${PLUGIN_ROOT}/hooks/scripts/queue-request.sh" "$ACTION" "$@"
+        ;;
+
+    # === Divan bridge ===
+
+    divan)
+        "${PLUGIN_ROOT}/hooks/scripts/divan-bridge.sh" "$@"
+        ;;
+
+    # === Web UI ===
+
+    web)
+        ensure_deps
+        if [[ ! -d "${PLUGIN_ROOT}/apps/web/node_modules" ]]; then
+            echo "Installing web UI dependencies..."
+            cd "${PLUGIN_ROOT}/apps/web" && npm install --silent 2>&1
+        fi
+        cd "${PLUGIN_ROOT}/apps/web" && npm run dev
+        ;;
+
+    # === Restart daemon ===
+
+    restart)
+        "$0" stop
+        sleep 2
+        tmux kill-session -t csm-daemon 2>/dev/null || true
+        "$0" start "$@"
+        ;;
+
+    # === Logs ===
+
+    logs)
+        STATE_FILE="${PLUGIN_ROOT}/.claude/csm-daemon.local.md"
+        if [[ -f "$STATE_FILE" ]]; then
+            cat "$STATE_FILE"
+        else
+            echo "No daemon state file found."
+        fi
+        ;;
+
+    # === Help ===
+
+    help|*)
+        cat <<'HELP'
+CSM — Claude Skill Manager
+
+Getting started:
+  csm setup                   First-time setup (install all deps, link to PATH)
+  csm start                   Launch daemon in background (fully automatic)
+  csm attach                  Attach to daemon session (talk directly)
+  csm stop                    Stop the daemon
+  csm restart                 Restart the daemon
+
+Registry commands (immediate):
+  csm status                  Registry overview
+  csm search <query>          Search registry
+  csm inspect <item-id>       Item details
+  csm compare <a> <b>         Compare two items
+  csm scout                   Scout all sources
+  csm evaluate                Evaluate candidates
+  csm propose                 Generate proposals
+  csm apply <proposal-id>     Apply a proposal
+  csm snapshot [desc]         Create snapshot
+  csm rollback <snap-id>      Rollback to snapshot
+
+Async (queued to daemon):
+  csm find <description>      Find a component (deep search)
+  csm suggest                 Get recommendations
+  csm build <description>     Build a new component
+
+Services:
+  csm serve                   Start API server (:8000)
+  csm web                     Start web UI (:5173)
+
+Divan:
+  csm divan add <plugin>      Add via divan
+  csm divan remove <plugin>   Remove via divan
+  csm divan sync              Sync divan profile
+  csm divan status            Show divan status
+
+Troubleshooting:
+  csm logs                    Show daemon state
+  csm restart                 Restart daemon
+HELP
+        ;;
+esac

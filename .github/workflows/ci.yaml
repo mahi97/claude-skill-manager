@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python
+        run: uv python install 3.12
+
+      - name: Install dependencies
+        run: uv sync --all-extras
+
+      - name: Lint
+        run: uv run ruff check .
+
+      - name: Format check
+        run: uv run ruff format --check .
+
+      - name: Type check
+        run: |
+          PYTHONPATH=packages/core:packages/connectors:packages/agents uv run mypy packages/core/csm_core/
+
+      - name: Test
+        run: |
+          PYTHONPATH=packages/core:packages/connectors:packages/agents uv run pytest tests/ -v
+
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install
+        working-directory: apps/web
+        run: npm install
+
+      - name: Type check
+        working-directory: apps/web
+        run: npx tsc --noEmit
+
+# Scheduled scout stub (uncomment to enable)
+# scout:
+#   runs-on: ubuntu-latest
+#   schedule:
+#     - cron: '0 6 * * 1'  # Weekly Monday 6am UTC
+#   steps:
+#     - uses: actions/checkout@v4
+#     - uses: astral-sh/setup-uv@v4
+#     - run: uv python install 3.12
+#     - run: uv sync
+#     - run: PYTHONPATH=packages/core:packages/connectors:packages/agents uv run python -m apps.cli.main scout
+#     - run: PYTHONPATH=packages/core:packages/connectors:packages/agents uv run python -m apps.cli.main propose

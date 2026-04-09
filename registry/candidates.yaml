@@ -1,0 +1,60 @@
+- id: plugin-obsidian-mcp
+  name: obsidian-mcp
+  type: mcp_server
+  description: "MCP server for reading and writing Obsidian vault notes"
+  source_url: "https://github.com/example/obsidian-mcp-server"
+  repo_url: "https://github.com/example/obsidian-mcp-server"
+  version: "0.3.0"
+  categories: [docs, memory]
+  trust_tier: community
+  risk:
+    flags: [wide_filesystem_access, network_calls]
+    score: 0.4
+  status: candidate
+  local_notes: "Discovered via GitHub search. Could complement remember plugin."
+  relationships:
+    - source_id: plugin-obsidian-mcp
+      target_id: plugin-remember
+      type: recommended_with
+  metadata:
+    discovered_at: "2025-04-01"
+
+- id: skill-arxiv-reader
+  name: arxiv-reader
+  type: skill
+  description: "Skill for fetching and summarizing arXiv papers"
+  source_url: "https://github.com/example/arxiv-reader-skill"
+  repo_url: "https://github.com/example/arxiv-reader-skill"
+  version: "1.0.0"
+  categories: [scientific, research-automation]
+  trust_tier: community
+  risk:
+    flags: [network_calls]
+    score: 0.2
+  status: candidate
+  local_notes: "Could overlap with huggingface-skills paper features"
+  relationships:
+    - source_id: skill-arxiv-reader
+      target_id: plugin-huggingface
+      type: conflicts_with
+      notes: "HF skills already has paper_search"
+  metadata:
+    discovered_at: "2025-04-05"
+
+- id: plugin-playwright-mcp
+  name: playwright-mcp
+  type: mcp_server
+  description: "Browser automation MCP server using Playwright"
+  source_url: "https://github.com/example/playwright-mcp"
+  repo_url: "https://github.com/example/playwright-mcp"
+  version: "0.5.0"
+  categories: [quality, ui]
+  trust_tier: community
+  risk:
+    flags: [shell_execution, network_calls, wide_filesystem_access]
+    score: 0.55
+  status: candidate
+  local_notes: "Useful for E2E testing but high risk profile"
+  relationships: []
+  metadata:
+    discovered_at: "2025-04-08"

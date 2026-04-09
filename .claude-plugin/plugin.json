@@ -1,0 +1,22 @@
+{
+  "name": "claude-skill-manager",
+  "description": "Persistent skill/plugin lifecycle manager — scouts, evaluates, proposes, and manages your Claude Code ecosystem. Runs as a background daemon in tmux with interactive /csm commands.",
+  "version": "0.1.0",
+  "author": {
+    "name": "Mahi97",
+    "email": ""
+  },
+  "homepage": "https://github.com/mahi97/claude-skill-manager",
+  "repository": "https://github.com/mahi97/claude-skill-manager",
+  "license": "MIT",
+  "keywords": [
+    "skill-manager",
+    "plugin-lifecycle",
+    "registry",
+    "scouting",
+    "evaluation",
+    "proposals",
+    "daemon",
+    "divan"
+  ]
+}

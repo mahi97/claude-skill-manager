@@ -1,0 +1,76 @@
+- id: src-official-marketplace
+  name: "Claude Code Official Marketplace"
+  type: marketplace_json
+  url: "https://marketplace.claude.ai/api/v1/plugins.json"
+  trust_tier: official
+  enabled: true
+  last_synced_at: null
+  sync_interval_hours: 24
+  metadata:
+    notes: "Placeholder - official marketplace API when available"
+
+- id: src-anthropic-plugins
+  name: "Anthropic Claude Code Plugins"
+  type: github_repo
+  url: "https://github.com/anthropics/claude-code-plugins"
+  trust_tier: official
+  enabled: true
+  last_synced_at: null
+  sync_interval_hours: 48
+  metadata:
+    notes: "Official Anthropic plugin repository"
+
+- id: src-divan-collection
+  name: "Divan Plugin Collection"
+  type: github_repo
+  url: "https://github.com/mahi97/divan"
+  trust_tier: curated
+  enabled: true
+  last_synced_at: null
+  sync_interval_hours: 48
+  metadata:
+    notes: "Divan plugin manager collection"
+
+- id: src-community-awesome
+  name: "Awesome Claude Code Plugins"
+  type: github_repo
+  url: "https://github.com/anthropics/awesome-claude-code"
+  trust_tier: community
+  enabled: true
+  last_synced_at: null
+  sync_interval_hours: 72
+  metadata:
+    notes: "Community-curated awesome list"
+
+- id: src-local-dev
+  name: "Local Development Plugins"
+  type: local_directory
+  url: "/home/mahi/.claude/plugins"
+  trust_tier: curated
+  enabled: true
+  last_synced_at: null
+  sync_interval_hours: 1
+  metadata:
+    notes: "Local plugin development directory"
+
+- id: src-skillhub
+  name: "SkillHub Marketplace"
+  type: skillhub
+  url: "https://www.skillhub.club/api/v1"
+  trust_tier: community
+  enabled: true
+  last_synced_at: null
+  sync_interval_hours: 24
+  metadata:
+    notes: "SkillHub.club — universal AI agent skills marketplace with 80k+ curated skills. Supports catalog browsing and semantic search. Set SKILLHUB_API_KEY for authenticated access."
+
+- id: src-custom-marketplace
+  name: "Custom Marketplace"
+  type: marketplace_json
+  url: "https://example.com/claude-marketplace.json"
+  trust_tier: community
+  enabled: false
+  last_synced_at: null
+  sync_interval_hours: 24
+  metadata:
+    notes: "Placeholder for custom marketplace endpoint"
